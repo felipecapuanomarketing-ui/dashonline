@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Yuny — BI Online (Março a Outubro 2025)</title>
+<script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+<style>
+  :root { --gold:#D4AF37; --text:#111; --muted:#666; }
+  body { font-family: Inter, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin:24px; color:var(--text); background:#fff; }
+  header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; gap:16px; }
+  .brand { display:flex; align-items:center; gap:12px; }
+  .brand h1 { font-size:20px; margin:0; }
+  .pill { background:rgba(212,175,55,0.08); color:var(--gold); border:1px solid rgba(212,175,55,0.3); padding:6px 10px; border-radius:999px; font-size:12px; }
+  .grid { display:grid; grid-template-columns: 1.2fr 1fr; gap:24px; }
+  .grid-2 { display:grid; grid-template-columns: 1fr 1fr; gap:24px; margin-top:24px; }
+  .card { border:1px solid #eee; border-radius:12px; padding:16px; }
+  h2 { font-size:16px; margin:0 0 10px 0; }
+  .kpis { display:grid; grid-template-columns: repeat(4,1fr); gap:12px; margin:8px 0 18px 0; }
+  .kpi { border:1px solid #eee; border-radius:12px; padding:12px; }
+  .kpi .label { color:#777; font-size:12px; }
+  .kpi .value { font-weight:700; font-size:18px; }
+  table { width:100%; border-collapse:collapse; }
+  th, td { padding:10px 12px; border-bottom:1px solid #eee; }
+  th { text-align:left; color:#555; font-size:12px; letter-spacing:.02em; }
+  tfoot td { font-weight:700; }
+  .select-row { display:flex; align-items:center; gap:8px; margin:8px 0 12px 0; }
+  select { padding:8px 10px; border-radius:8px; border:1px solid #ddd; }
+  footer { margin-top: 22px; display:flex; align-items:center; justify-content:space-between; font-size:12px; color:var(--muted);}
+</style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <img src='data:image/webp;base64,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' alt='Yuny' style='height:36px;' />
+      <h1>Performance Online — Yuny (Março a Outubro 2025)</h1>
+    </div>
+    <span class="pill">BI Interativo</span>
+  </header>
+
+  <section class="kpis">
+    <div class="kpi"><div class="label">VGV acumulado</div><div class="value" id="vgvTotal"></div></div>
+    <div class="kpi"><div class="label">Investimento (mídia + estrutura)</div><div class="value" id="invest"></div></div>
+    <div class="kpi"><div class="label">ROI total</div><div class="value" id="roi"></div></div>
+    <div class="kpi"><div class="label">Pico mensal</div><div class="value" id="pico"></div></div>
+  </section>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Evolução Mensal do VGV Online</h2>
+      <div id="line"></div>
+    </div>
+    <div class="card">
+      <h2>Resultados por Mês</h2>
+      <table>
+        <thead><tr><th>Mês</th><th style="text-align:right">VGV (R$)</th></tr></thead>
+        <tbody>
+          <tr><td>Março</td><td class='val' data-num='961968'></td></tr><tr><td>Abril</td><td class='val' data-num='1294520'></td></tr><tr><td>Maio</td><td class='val' data-num='1495000'></td></tr><tr><td>Junho</td><td class='val' data-num='10287000'></td></tr><tr><td>Julho</td><td class='val' data-num='1643312'></td></tr><tr><td>Agosto</td><td class='val' data-num='3950000'></td></tr><tr><td>Setembro</td><td class='val' data-num='15319600'></td></tr><tr><td>Outubro</td><td class='val' data-num='52619600'></td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td>Total</td><td id="totalVgv" style="text-align:right"></td></tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h2>Mix de Produtos por Mês</h2>
+      <div class="select-row">
+        <label for="mesSel">Mês:</label>
+        <select id="mesSel"></select>
+      </div>
+      <div id="pie"></div>
+    </div>
+    <div class="card">
+      <h2>Observações</h2>
+      <p style="color:#555; line-height:1.5">
+        • Outubro marca o pico do período com forte contribuição de Quaddra Lorena e 155 Jerônimo.<br/>
+        • Crescimento sustentado após julho indica ganho de tração do digital.<br/>
+        • ROI considera investimento total (mídia + estrutura).
+      </p>
+    </div>
+  </div>
+
+  <footer>
+    <div>Fonte: Squad Yuny — CRM & Mídia Digital</div>
+    <div>Atualizado com Outubro = R$ 52.619.600</div>
+  </footer>
+
+<script>
+  const months = ["Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro"];
+  const vgvVals = [961968, 1294520, 1495000, 10287000, 1643312, 3950000, 15319600, 52619600];
+  const mixData = {"Março": {"Camino Alto da Boa Vista": 2}, "Abril": {"Camino Residencial": 1, "Zip Brooklin": 1}, "Maio": {"Camino Residencial": 1, "Camino Studio": 1, "Zip Brooklin": 1}, "Junho": {"Zip Brooklin": 3, "Quaddra Lorena": 1}, "Julho": {"Jardim Sul": 1, "Camino Upgrade": 1, "Camino Residencial": 2}, "Agosto": {"Organy Essencial": 2, "Camino Residencial": 1}, "Setembro": {"Quaddra Lorena": 1, "Zip Brooklin": 1}, "Outubro": {"Quaddra Lorena": 3, "Organy Essencial": 1, "Zip Brooklin": 1, "155 Jerônimo": 3}};
+  const invest = 1291720;
+  const total = vgvVals.reduce((a,b)=>a+b,0);
+  const roi = (total - invest) / invest;
+
+  // Helpers
+  const brl = (n) => "R$ " + n.toLocaleString('pt-BR', {maximumFractionDigits: 0});
+
+  // KPIs
+  document.getElementById('vgvTotal').innerText = brl(total);
+  document.getElementById('invest').innerText = brl(invest);
+  document.getElementById('roi').innerText = roi.toFixed(1) + "x";
+  document.getElementById('pico').innerText = "Outubro — " + brl(vgvVals[vgvVals.length-1]);
+
+  // Fill table numbers
+  document.querySelectorAll('td.val').forEach(td => {
+    const n = parseFloat(td.getAttribute('data-num'));
+    td.innerText = brl(n);
+  });
+  document.getElementById('totalVgv').innerText = brl(total);
+
+  // Line chart
+  Plotly.newPlot('line', [{
+    x: months,
+    y: vgvVals,
+    type: 'scatter',
+    mode: 'lines+markers',
+    line: {color: '#D4AF37', width: 4},
+    marker: {size: 8}
+  }], {
+    margin: {t: 10, r: 10, b: 40, l: 50},
+    xaxis: {tickangle: -15},
+    yaxis: {tickformat: ',d', gridcolor: 'rgba(0,0,0,0.1)'},
+  }, {displayModeBar: false});
+
+  // Populate select + pie
+  const sel = document.getElementById('mesSel');
+  months.forEach(m => { const o = document.createElement('option'); o.value=m; o.textContent=m; sel.appendChild(o); });
+  sel.value = 'Outubro';
+
+  function drawPie(month) {
+    const obj = mixData[month] || {};
+    const labels = Object.keys(obj);
+    const values = Object.values(obj);
+    if (!labels.length) {
+      Plotly.newPlot('pie', [{labels:['Sem dados'], values:[1], type:'pie', marker:{colors:['#eee']}}],
+        {margin: {t: 10, r: 10, b: 10, l: 10}}, {displayModeBar:false});
+      return;
+    }
+    const labWithQty = labels.map((l,i) => l + " (" + values[i] + ")");
+    Plotly.newPlot('pie', [{
+      labels: labWithQty,
+      values: values,
+      type: 'pie',
+      marker: {colors: ['#D4AF37','#B0A170','#E1C699','#8C7853','#EEE8AA','#C8B88A','#D9C89E','#BDA55D']},
+      textinfo: 'percent'
+    }], { margin: {t: 10, r: 10, b: 10, l: 10} }, {displayModeBar:false});
+  }
+  drawPie(sel.value);
+  sel.addEventListener('change', e => drawPie(e.target.value));
+</script>
+</body>
+</html>

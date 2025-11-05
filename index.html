@@ -5,7 +5,15 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Yuny — BI Online (Março a Outubro 2025)</title>
-<script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.30.0.min.js">
+  window.addEventListener('resize', () => {
+    try {
+      Plotly.restyle('line', {'textfont.size': [labelSize()]});
+      Plotly.Plots.resize('line'); Plotly.Plots.resize('pie');
+    } catch(e){}
+  });
+
+</script>
 <style>
   :root { --gold:#D4AF37; --text:#111; --muted:#666; }
   body { font-family: Inter, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin:24px; color:var(--text); background:#fff; }
@@ -28,6 +36,23 @@
   .select-row { display:flex; align-items:center; gap:8px; margin:8px 0 12px 0; }
   select { padding:8px 10px; border-radius:8px; border:1px solid #ddd; }
   footer { margin-top: 22px; display:flex; align-items:center; justify-content:space-between; font-size:12px; color:var(--muted);}
+
+  /* —— Mobile adaptations —— */
+  @media (max-width: 900px){
+    header{ flex-wrap: wrap; }
+    .grid { grid-template-columns: 1fr; }
+    .grid-2 { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 680px){
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 420px){
+    body { margin: 12px; }
+    .kpis { grid-template-columns: 1fr; }
+  }
+  /* Table wrapper for horizontal scroll on small screens */
+  .table-wrap { width:100%; overflow-x:auto; }
+
 </style>
 </head>
 <body>
@@ -53,6 +78,7 @@
     </div>
     <div class="card">
       <h2>Resultados por Mês</h2>
+      <div class="table-wrap">
       <table>
         <thead><tr><th>Mês</th><th style="text-align:right">VGV (R$)</th></tr></thead>
         <tbody>
@@ -62,8 +88,8 @@
           <tr><td>Total</td><td id="totalVgv" style="text-align:right"></td></tr>
         </tfoot>
       </table>
+      </div>
     </div>
-  </div>
 
   <div class="grid-2">
     <div class="card">
@@ -98,6 +124,9 @@
   const roi = (total - invest) / invest;
 
   // Helpers
+  const labelsBRL = (vals) => vals.map(v => "R$ " + Math.round(v).toLocaleString('pt-BR'));
+  function labelSize(){ const w=window.innerWidth; if(w<=420) return 9; if(w<=680) return 10; return 11; }
+
   const brl = (n) => "R$ " + n.toLocaleString('pt-BR', {maximumFractionDigits: 0});
 
   // KPIs
@@ -138,7 +167,7 @@
     const values = Object.values(obj);
     if (!labels.length) {
       Plotly.newPlot('pie', [{labels:['Sem dados'], values:[1], type:'pie', marker:{colors:['#eee']}}],
-        {margin: {t: 10, r: 10, b: 10, l: 10}}, {displayModeBar:false});
+        {margin: {t: 10, r: 10, b: 10, l: 10}}, {displayModeBar:false, responsive:true});
       return;
     }
     const labWithQty = labels.map((l,i) => l + " (" + values[i] + ")");
@@ -148,10 +177,18 @@
       type: 'pie',
       marker: {colors: ['#D4AF37','#B0A170','#E1C699','#8C7853','#EEE8AA','#C8B88A','#D9C89E','#BDA55D']},
       textinfo: 'percent'
-    }], { margin: {t: 10, r: 10, b: 10, l: 10} }, {displayModeBar:false});
+    }], { margin: {t: 10, r: 10, b: 10, l: 10} }, {displayModeBar:false, responsive:true});
   }
   drawPie(sel.value);
   sel.addEventListener('change', e => drawPie(e.target.value));
+
+  window.addEventListener('resize', () => {
+    try {
+      Plotly.restyle('line', {'textfont.size': [labelSize()]});
+      Plotly.Plots.resize('line'); Plotly.Plots.resize('pie');
+    } catch(e){}
+  });
+
 </script>
 </body>
 </html>

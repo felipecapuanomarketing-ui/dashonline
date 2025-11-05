@@ -151,9 +151,9 @@
     line: {color: '#D4AF37', width: 4},
     marker: {size: 8}
   }], {
-    margin: {t: 10, r: 10, b: 40, l: 50},
+    margin: { t: 10, r: 10, b: 40, l: 110 },
     xaxis: {tickangle: -15},
-    yaxis: {tickformat: ',d', gridcolor: 'rgba(0,0,0,0.1)'},
+    yaxis: { tickprefix: 'R$ ', tickformat: ',.0f', gridcolor: 'rgba(0,0,0,0.1)', nticks: 6 },
   }, {displayModeBar: false});
 
   // Populate select + pie

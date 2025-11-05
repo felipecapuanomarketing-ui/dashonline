@@ -153,7 +153,14 @@
   }], {
     margin: { t: 10, r: 10, b: 40, l: 110 },
     xaxis: {tickangle: -15},
-    yaxis: { tickprefix: 'R$ ', tickformat: ',.0f', gridcolor: 'rgba(0,0,0,0.1)', nticks: 6 },
+    
+yaxis: {
+  tickvals: [0, 10000000, 20000000, 30000000, 40000000, 50000000],
+  ticktext: ['R$ 0', '10M', '20M', '30M', '40M', '50M'],
+  gridcolor: 'rgba(0,0,0,0.1)',
+  nticks: 6
+}
+,
   }, {displayModeBar: false});
 
   // Populate select + pie

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -12,7 +11,6 @@
       Plotly.Plots.resize('line'); Plotly.Plots.resize('pie');
     } catch(e){}
   });
-
 </script>
 <style>
   :root { --gold:#D4AF37; --text:#111; --muted:#666; }
@@ -82,7 +80,14 @@
       <table>
         <thead><tr><th>Mês</th><th style="text-align:right">VGV (R$)</th></tr></thead>
         <tbody>
-          <tr><td>Março</td><td class='val' data-num='961968'></td></tr><tr><td>Abril</td><td class='val' data-num='1294520'></td></tr><tr><td>Maio</td><td class='val' data-num='1495000'></td></tr><tr><td>Junho</td><td class='val' data-num='10287000'></td></tr><tr><td>Julho</td><td class='val' data-num='1643312'></td></tr><tr><td>Agosto</td><td class='val' data-num='3950000'></td></tr><tr><td>Setembro</td><td class='val' data-num='15319600'></td></tr><tr><td>Outubro</td><td class='val' data-num='52619600'></td></tr>
+          <tr><td>Março</td><td class='val' data-num='961968'></td></tr>
+          <tr><td>Abril</td><td class='val' data-num='1294520'></td></tr>
+          <tr><td>Maio</td><td class='val' data-num='1495000'></td></tr>
+          <tr><td>Junho</td><td class='val' data-num='10287000'></td></tr>
+          <tr><td>Julho</td><td class='val' data-num='1643312'></td></tr>
+          <tr><td>Agosto</td><td class='val' data-num='3950000'></td></tr>
+          <tr><td>Setembro</td><td class='val' data-num='15319600'></td></tr>
+          <tr><td>Outubro</td><td class='val' data-num='33369600'></td></tr>
         </tbody>
         <tfoot>
           <tr><td>Total</td><td id="totalVgv" style="text-align:right"></td></tr>
@@ -103,7 +108,7 @@
     <div class="card">
       <h2>Observações</h2>
       <p style="color:#555; line-height:1.5">
-        • Outubro marca o pico do período com forte contribuição de Quaddra Lorena e 155 Jerônimo.<br/>
+        • Outubro marca o pico do período com forte contribuição de Quaddra Lorena.<br/>
         • Crescimento sustentado após julho indica ganho de tração do digital.<br/>
         • ROI considera investimento total (mídia + estrutura).
       </p>
@@ -112,14 +117,28 @@
 
   <footer>
     <div>Fonte: Squad Yuny — CRM & Mídia Digital</div>
-    <div>Atualizado com Outubro = R$ 52.619.600</div>
+    <div>Atualizado com Outubro = R$ 33.369.600</div>
   </footer>
 
 <script>
   const months = ["Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro"];
-  const vgvVals = [961968, 1294520, 1495000, 10287000, 1643312, 3950000, 15319600, 52619600];
-  const mixData = {"Março": {"Camino Alto da Boa Vista": 2}, "Abril": {"Camino Residencial": 1, "Zip Brooklin": 1}, "Maio": {"Camino Residencial": 1, "Camino Studio": 1, "Zip Brooklin": 1}, "Junho": {"Zip Brooklin": 3, "Quaddra Lorena": 1}, "Julho": {"Jardim Sul": 1, "Camino Upgrade": 1, "Camino Residencial": 2}, "Agosto": {"Organy Essencial": 2, "Camino Residencial": 1}, "Setembro": {"Quaddra Lorena": 1, "Zip Brooklin": 1}, "Outubro": {"Quaddra Lorena": 3, "Organy Essencial": 1, "Zip Brooklin": 1, "155 Jerônimo": 3}};
+  // >>> Outubro atualizado para 33.369.600
+  const vgvVals = [961968, 1294520, 1495000, 10287000, 1643312, 3950000, 15319600, 33369600];
+
+  // >>> Mix de Outubro sem "155 Jerônimo"
+  const mixData = {
+    "Março": {"Camino Alto da Boa Vista": 2},
+    "Abril": {"Camino Residencial": 1, "Zip Brooklin": 1},
+    "Maio": {"Camino Residencial": 1, "Camino Studio": 1, "Zip Brooklin": 1},
+    "Junho": {"Zip Brooklin": 3, "Quaddra Lorena": 1},
+    "Julho": {"Jardim Sul": 1, "Camino Upgrade": 1, "Camino Residencial": 2},
+    "Agosto": {"Organy Essencial": 2, "Camino Residencial": 1},
+    "Setembro": {"Quaddra Lorena": 1, "Zip Brooklin": 1},
+    "Outubro": {"Quaddra Lorena": 3, "Organy Essencial": 1, "Zip Brooklin": 1}
+  };
+
   const invest = 1291720;
+
   const total = vgvVals.reduce((a,b)=>a+b,0);
   const roi = (total - invest) / invest;
 
@@ -153,14 +172,12 @@
   }], {
     margin: { t: 10, r: 10, b: 40, l: 110 },
     xaxis: {tickangle: -15},
-    
-yaxis: {
-  tickvals: [0, 10000000, 20000000, 30000000, 40000000, 50000000],
-  ticktext: ['R$ 0', '10M', '20M', '30M', '40M', '50M'],
-  gridcolor: 'rgba(0,0,0,0.1)',
-  nticks: 6
-}
-,
+    yaxis: {
+      tickvals: [0, 10000000, 20000000, 30000000, 40000000, 50000000],
+      ticktext: ['R$ 0', '10M', '20M', '30M', '40M', '50M'],
+      gridcolor: 'rgba(0,0,0,0.1)',
+      nticks: 6
+    },
   }, {displayModeBar: false});
 
   // Populate select + pie

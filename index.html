@@ -4,14 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Yuny — BI Online (Março a Outubro 2025)</title>
-<script src="https://cdn.plot.ly/plotly-2.30.0.min.js">
-  window.addEventListener('resize', () => {
-    try {
-      Plotly.restyle('line', {'textfont.size': [labelSize()]});
-      Plotly.Plots.resize('line'); Plotly.Plots.resize('pie');
-    } catch(e){}
-  });
-</script>
+<script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
 <style>
   :root { --gold:#D4AF37; --text:#111; --muted:#666; }
   body { font-family: Inter, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin:24px; color:var(--text); background:#fff; }
@@ -50,7 +43,6 @@
   }
   /* Table wrapper for horizontal scroll on small screens */
   .table-wrap { width:100%; overflow-x:auto; }
-
 </style>
 </head>
 <body>
@@ -122,10 +114,10 @@
 
 <script>
   const months = ["Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro"];
-  // >>> Outubro atualizado para 33.369.600
+  // Outubro atualizado para 33.369.600
   const vgvVals = [961968, 1294520, 1495000, 10287000, 1643312, 3950000, 15319600, 33369600];
 
-  // >>> Mix de Outubro sem "155 Jerônimo"
+  // Mix de Outubro sem "155 Jerônimo"
   const mixData = {
     "Março": {"Camino Alto da Boa Vista": 2},
     "Abril": {"Camino Residencial": 1, "Zip Brooklin": 1},
@@ -137,15 +129,13 @@
     "Outubro": {"Quaddra Lorena": 3, "Organy Essencial": 1, "Zip Brooklin": 1}
   };
 
-  const invest = 1291720;
+  const invest = 1291720; // mídia + estrutura
 
   const total = vgvVals.reduce((a,b)=>a+b,0);
   const roi = (total - invest) / invest;
 
   // Helpers
-  const labelsBRL = (vals) => vals.map(v => "R$ " + Math.round(v).toLocaleString('pt-BR'));
   function labelSize(){ const w=window.innerWidth; if(w<=420) return 9; if(w<=680) return 10; return 11; }
-
   const brl = (n) => "R$ " + n.toLocaleString('pt-BR', {maximumFractionDigits: 0});
 
   // KPIs
@@ -154,14 +144,14 @@
   document.getElementById('roi').innerText = roi.toFixed(1) + "x";
   document.getElementById('pico').innerText = "Outubro — " + brl(vgvVals[vgvVals.length-1]);
 
-  // Fill table numbers
+  // Tabela
   document.querySelectorAll('td.val').forEach(td => {
     const n = parseFloat(td.getAttribute('data-num'));
     td.innerText = brl(n);
   });
   document.getElementById('totalVgv').innerText = brl(total);
 
-  // Line chart
+  // Linha
   Plotly.newPlot('line', [{
     x: months,
     y: vgvVals,
@@ -177,10 +167,10 @@
       ticktext: ['R$ 0', '10M', '20M', '30M', '40M', '50M'],
       gridcolor: 'rgba(0,0,0,0.1)',
       nticks: 6
-    },
+    }
   }, {displayModeBar: false});
 
-  // Populate select + pie
+  // Pie
   const sel = document.getElementById('mesSel');
   months.forEach(m => { const o = document.createElement('option'); o.value=m; o.textContent=m; sel.appendChild(o); });
   sel.value = 'Outubro';
@@ -206,13 +196,12 @@
   drawPie(sel.value);
   sel.addEventListener('change', e => drawPie(e.target.value));
 
+  // Resize
   window.addEventListener('resize', () => {
     try {
-      Plotly.restyle('line', {'textfont.size': [labelSize()]});
       Plotly.Plots.resize('line'); Plotly.Plots.resize('pie');
     } catch(e){}
   });
-
 </script>
 </body>
 </html>

@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Yuny — BI Online (Março a Novembro 2025)</title>
 
-<!-- Plotly CDN -->
 <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
 
 <style>
@@ -48,7 +47,7 @@
   .select-row { display:flex; align-items:center; gap:8px; margin:8px 0 12px 0; }
   select { padding:8px 10px; border-radius:8px; border:1px solid #ddd; }
   footer {
-    margin-top: 22px;
+    margin-top:22px;
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -132,7 +131,7 @@
       • <b>Outubro foi o pico absoluto de performance</b>, destacando a força do digital no período.<br/>
       • As campanhas estruturadas iniciaram <b>a partir de abril</b>, totalizando 8 meses de operação contínua.<br/>
       • Média mensal do período: <b>R$ 11.796.937,50 em VGV</b> – indicador forte de consistência.<br/>
-      • No mix, os rótulos mostram <b>produto, quantidade e VGV estimado do mês</b> (ticket médio).<br/>
+      • Nos gráficos de mix, os rótulos mostram <b>produto, quantidade e VGV estimado do mês</b> (ticket médio).<br/>
     </p>
   </div>
 </div>
@@ -143,7 +142,7 @@
 </footer>
 
 <script>
-// ===== Dados base =====
+// ===== Dados =====
 const months = ["Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro"];
 
 const vgvVals = [
@@ -186,6 +185,7 @@ const invest = 1513472.52;
 const total  = vgvVals.reduce((a,b)=>a+b,0);
 const roi    = (total - invest) / invest;
 
+// ===== Helpers =====
 function brl(n){
   return "R$ " + n.toLocaleString("pt-BR", {
     minimumFractionDigits: 2,
@@ -194,7 +194,7 @@ function brl(n){
 }
 
 // ===== KPIs =====
-document.getElementById("vgvTotal").innerText = brl(total);
+document.getElementById("vgvTotal").innerText = brl(total);         // R$ 94.375.500,00
 document.getElementById("invest").innerText  = brl(invest);
 document.getElementById("roi").innerText     = roi.toFixed(1).replace(".", ",") + "x";
 
@@ -213,84 +213,75 @@ document.querySelectorAll("td.val").forEach(td=>{
 });
 document.getElementById("totalVgv").innerText = brl(total);
 
-// ===== Gráficos (com fallback se Plotly não carregar) =====
-function desenharGraficos(){
-  if (typeof Plotly === "undefined"){
-    document.getElementById("line").innerHTML = "Não foi possível carregar o gráfico de linha (Plotly bloqueado).";
-    document.getElementById("pie").innerHTML  = "Não foi possível carregar o gráfico de pizza (Plotly bloqueado).";
+// ===== Gráfico de Linha =====
+Plotly.newPlot("line", [{
+  x: months,
+  y: vgvVals,
+  type:"scatter",
+  mode:"lines+markers",
+  line:{ color:"#D4AF37", width:4 },
+  marker:{ size:8 }
+}], {
+  margin:{ t:10, r:10, b:40, l:100 },
+  xaxis:{ tickangle:-15 },
+  yaxis:{
+    tickvals:[0,20000000,40000000,60000000],
+    ticktext:["0","20M","40M","60M"],
+    gridcolor:"rgba(0,0,0,0.1)"
+  }
+}, { displayModeBar:false });
+
+// ===== Pizza =====
+const sel = document.getElementById("mesSel");
+months.forEach(m=>{
+  const o = document.createElement("option");
+  o.value = m;
+  o.textContent = m;
+  sel.appendChild(o);
+});
+sel.value = "Novembro";
+
+// Rótulo: Produto (qtd) R$ 22.000.000,00
+function drawPie(month){
+  const obj = mixData[month] || {};
+  const labels = Object.keys(obj);
+  const values = Object.values(obj);
+
+  if(!labels.length){
+    Plotly.newPlot("pie", [{
+      labels:["Sem dados"],
+      values:[1],
+      type:"pie",
+      marker:{ colors:["#eee"] }
+    }], { margin:{t:10,b:10} }, { displayModeBar:false });
     return;
   }
 
-  // Linha
-  Plotly.newPlot("line", [{
-    x: months,
-    y: vgvVals,
-    type:"scatter",
-    mode:"lines+markers",
-    line:{ color:"#D4AF37", width:4 },
-    marker:{ size:8 }
-  }], {
-    margin:{ t:10, r:10, b:40, l:100 },
-    xaxis:{ tickangle:-15 },
-    yaxis:{
-      tickvals:[0,20000000,40000000,60000000],
-      ticktext:["0","20M","40M","60M"],
-      gridcolor:"rgba(0,0,0,0.1)"
-    }
-  }, { displayModeBar:false });
+  const monthTotalVgv = monthVgv[month] || 0;
+  const totalQtd = values.reduce((a,b)=>a+b,0);
+  const ticketMedio = totalQtd ? monthTotalVgv / totalQtd : 0;
 
-  // Select meses
-  const sel = document.getElementById("mesSel");
-  months.forEach(m=>{
-    const o = document.createElement("option");
-    o.value = m;
-    o.textContent = m;
-    sel.appendChild(o);
+  const labelsWithVgv = labels.map((l,i)=>{
+    const qtd = values[i];
+    const vgvProd = qtd * ticketMedio;
+    return l + " (" + qtd + ") " + brl(vgvProd); // Ex.: Quaddra Lorena (3) R$ 22.000.000,00
   });
-  sel.value = "Novembro";
 
-  function drawPie(month){
-    const obj = mixData[month] || {};
-    const labels = Object.keys(obj);
-    const values = Object.values(obj);
-
-    if(!labels.length){
-      Plotly.newPlot("pie", [{
-        labels:["Sem dados"],
-        values:[1],
-        type:"pie",
-        marker:{ colors:["#eee"] }
-      }], { margin:{t:10,b:10} }, { displayModeBar:false });
-      return;
+  Plotly.newPlot("pie", [{
+    labels: labelsWithVgv,
+    values: values,
+    type:"pie",
+    textinfo:"percent",
+    marker:{
+      colors:['#D4AF37','#B0A170','#E1C699','#8C7853',
+              '#EEE8AA','#C8B88A','#D9C89E','#BDA55D']
     }
-
-    const monthTotalVgv = monthVgv[month] || 0;
-    const totalQtd = values.reduce((a,b)=>a+b,0);
-    const ticketMedio = totalQtd ? monthTotalVgv / totalQtd : 0;
-
-    const labelsWithVgv = labels.map((l,i)=>{
-      const qtd = values[i];
-      const vgvProd = qtd * ticketMedio;
-      return l + " (" + qtd + ") " + brl(vgvProd);
-    });
-
-    Plotly.newPlot("pie", [{
-      labels: labelsWithVgv,
-      values: values,
-      type:"pie",
-      textinfo:"percent",
-      marker:{
-        colors:['#D4AF37','#B0A170','#E1C699','#8C7853',
-                '#EEE8AA','#C8B88A','#D9C89E','#BDA55D']
-      }
-    }], { margin:{t:10,b:10} }, { displayModeBar:false });
-  }
-
-  drawPie(sel.value);
-  sel.addEventListener("change", e=>drawPie(e.target.value));
+  }], { margin:{t:10,b:10} }, { displayModeBar:false });
 }
 
-desenharGraficos();
+drawPie(sel.value);
+sel.addEventListener("change", e=>drawPie(e.target.value));
 </script>
+
 </body>
 </html>

@@ -106,7 +106,7 @@
       • <b>Outubro foi o pico absoluto de performance</b>, destacando a força do digital no período.<br/>
       • As campanhas estruturadas iniciaram <b>a partir de abril</b>, totalizando 8 meses de operação contínua.<br/>
       • Média mensal do período: <b>R$ 11,79 milhões em VGV</b> – excelente indicador de consistência.<br/>
-      • Novembro registra 3 vendas, todas via Facebook.<br/>
+      • Nos gráficos de mix, o VGV por produto é estimado com base no <b>ticket médio do mês</b>, para facilitar leitura executiva por produto.<br/>
     </p>
   </div>
 </div>
@@ -117,7 +117,6 @@
 </footer>
 
 <script>
-
 const months = ["Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro"];
 
 const vgvVals = [
@@ -131,6 +130,19 @@ const vgvVals = [
   33369600,
   3204500
 ];
+
+// VGV por mês (map pra usar no mix)
+const monthVgv = {
+  "Março":    961968,
+  "Abril":    1294520,
+  "Maio":     1495000,
+  "Junho":    22837000,
+  "Julho":    1643312,
+  "Agosto":   14250000,
+  "Setembro": 15319600,
+  "Outubro":  33369600,
+  "Novembro": 3204500
+};
 
 const mixData = {
   "Março": {"Camino Alto da Boa Vista": 2},
@@ -148,7 +160,7 @@ const invest = 1513472.52;
 const total = vgvVals.reduce((a,b)=>a+b,0);
 const roi = (total - invest) / invest;
 
-function brl(n){ return "R$ " + n.toLocaleString('pt-BR'); }
+function brl(n){ return "R$ " + n.toLocaleString('pt-BR', {maximumFractionDigits:0}); }
 
 document.getElementById('vgvTotal').innerText = brl(total);
 document.getElementById('invest').innerText = brl(invest);
@@ -166,6 +178,7 @@ document.querySelectorAll("td.val").forEach(td=>{
 });
 document.getElementById("totalVgv").innerText = brl(total);
 
+// Linha principal
 Plotly.newPlot("line", [{
   x: months,
   y: vgvVals,
@@ -183,14 +196,17 @@ Plotly.newPlot("line", [{
   }
 },{displayModeBar:false});
 
+// Select de meses
 const sel = document.getElementById("mesSel");
 months.forEach(m=>{
   const o=document.createElement("option");
-  o.value=m; o.textContent=m;
+  o.value=m; 
+  o.textContent=m;
   sel.appendChild(o);
 });
 sel.value="Novembro";
 
+// Pizza com qtd + VGV estimado por produto
 function drawPie(month){
   const obj = mixData[month] || {};
   const labels = Object.keys(obj);
@@ -206,8 +222,18 @@ function drawPie(month){
     return;
   }
 
+  const monthTotalVgv = monthVgv[month] || 0;
+  const totalQtd = values.reduce((a,b)=>a+b,0);
+  const ticketMedio = totalQtd ? monthTotalVgv / totalQtd : 0;
+
+  const labelsWithVgv = labels.map((l,i)=>{
+    const qtd = values[i];
+    const vgvEst = qtd * ticketMedio;
+    return l + " (" + qtd + " · ~" + brl(vgvEst) + ")";
+  });
+
   Plotly.newPlot("pie",[{
-    labels: labels.map((l,i)=>l+" ("+values[i]+")"),
+    labels: labelsWithVgv,
     values: values,
     type:"pie",
     textinfo:"percent",

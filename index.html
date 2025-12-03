@@ -4,15 +4,35 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Yuny — BI Online (Março a Novembro 2025)</title>
+
+<!-- Plotly CDN -->
 <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
 
 <style>
   :root { --gold:#D4AF37; --text:#111; --muted:#666; }
-  body { font-family: Inter, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin:24px; color:var(--text); background:#fff; }
-  header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; gap:16px; }
+  body {
+    font-family: Inter, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    margin:24px;
+    color:var(--text);
+    background:#fff;
+  }
+  header {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:16px;
+    gap:16px;
+  }
   .brand { display:flex; align-items:center; gap:12px; }
   .brand h1 { font-size:20px; margin:0; font-weight:700; }
-  .pill { background:rgba(212,175,55,0.08); color:var(--gold); border:1px solid rgba(212,175,55,0.3); padding:6px 10px; border-radius:999px; font-size:12px; }
+  .pill {
+    background:rgba(212,175,55,0.08);
+    color:var(--gold);
+    border:1px solid rgba(212,175,55,0.3);
+    padding:6px 10px;
+    border-radius:999px;
+    font-size:12px;
+  }
   .grid { display:grid; grid-template-columns: 1.2fr 1fr; gap:24px; }
   .grid-2 { display:grid; grid-template-columns: 1fr 1fr; gap:24px; margin-top:24px; }
   .card { border:1px solid #eee; border-radius:12px; padding:16px; background:#fff; }
@@ -27,7 +47,14 @@
   tfoot td { font-weight:700; }
   .select-row { display:flex; align-items:center; gap:8px; margin:8px 0 12px 0; }
   select { padding:8px 10px; border-radius:8px; border:1px solid #ddd; }
-  footer { margin-top: 22px; display:flex; align-items:center; justify-content:space-between; font-size:12px; color:var(--muted);}
+  footer {
+    margin-top: 22px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-size:12px;
+    color:var(--muted);
+  }
   @media (max-width: 900px){
     header{ flex-wrap: wrap; }
     .grid { grid-template-columns: 1fr; }
@@ -42,10 +69,9 @@
   }
   .table-wrap { width:100%; overflow-x:auto; }
 </style>
-
 </head>
-<body>
 
+<body>
 <header>
   <div class="brand">
     <h1>Performance Online — Yuny (Março a Novembro 2025)</h1>
@@ -72,15 +98,15 @@
       <table>
         <thead><tr><th>Mês</th><th style="text-align:right">VGV (R$)</th></tr></thead>
         <tbody>
-          <tr><td>Março</td><td class='val' data-num='961968'></td></tr>
-          <tr><td>Abril</td><td class='val' data-num='1294520'></td></tr>
-          <tr><td>Maio</td><td class='val' data-num='1495000'></td></tr>
-          <tr><td>Junho</td><td class='val' data-num='22837000'></td></tr>
-          <tr><td>Julho</td><td class='val' data-num='1643312'></td></tr>
-          <tr><td>Agosto</td><td class='val' data-num='14250000'></td></tr>
-          <tr><td>Setembro</td><td class='val' data-num='15319600'></td></tr>
-          <tr><td>Outubro</td><td class='val' data-num='33369600'></td></tr>
-          <tr><td>Novembro</td><td class='val' data-num='3204500'></td></tr>
+          <tr><td>Março</td><td class="val" data-num="961968"></td></tr>
+          <tr><td>Abril</td><td class="val" data-num="1294520"></td></tr>
+          <tr><td>Maio</td><td class="val" data-num="1495000"></td></tr>
+          <tr><td>Junho</td><td class="val" data-num="22837000"></td></tr>
+          <tr><td>Julho</td><td class="val" data-num="1643312"></td></tr>
+          <tr><td>Agosto</td><td class="val" data-num="14250000"></td></tr>
+          <tr><td>Setembro</td><td class="val" data-num="15319600"></td></tr>
+          <tr><td>Outubro</td><td class="val" data-num="33369600"></td></tr>
+          <tr><td>Novembro</td><td class="val" data-num="3204500"></td></tr>
         </tbody>
         <tfoot>
           <tr><td>Total</td><td id="totalVgv" style="text-align:right"></td></tr>
@@ -105,8 +131,8 @@
     <p style="color:#555; line-height:1.5">
       • <b>Outubro foi o pico absoluto de performance</b>, destacando a força do digital no período.<br/>
       • As campanhas estruturadas iniciaram <b>a partir de abril</b>, totalizando 8 meses de operação contínua.<br/>
-      • Média mensal do período: <b>R$ 11,79 milhões em VGV</b> – excelente indicador de consistência.<br/>
-      • Nos gráficos de mix, o VGV por produto é estimado com base no <b>ticket médio do mês</b>, para facilitar leitura executiva por produto.<br/>
+      • Média mensal do período: <b>R$ 11.796.937,50 em VGV</b> – indicador forte de consistência.<br/>
+      • No mix, os rótulos mostram <b>produto, quantidade e VGV estimado do mês</b> (ticket médio).<br/>
     </p>
   </div>
 </div>
@@ -117,6 +143,7 @@
 </footer>
 
 <script>
+// ===== Dados base =====
 const months = ["Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro"];
 
 const vgvVals = [
@@ -131,7 +158,6 @@ const vgvVals = [
   3204500
 ];
 
-// VGV por mês (map pra usar no mix)
 const monthVgv = {
   "Março":    961968,
   "Abril":    1294520,
@@ -145,108 +171,126 @@ const monthVgv = {
 };
 
 const mixData = {
-  "Março": {"Camino Alto da Boa Vista": 2},
-  "Abril": {"Camino Residencial": 1, "Zip Brooklin": 1},
-  "Maio": {"Camino Residencial": 1, "Camino Studio": 1, "Zip Brooklin": 1},
-  "Junho": {"Zip Brooklin": 3, "Quaddra Lorena": 2},
-  "Julho": {"Jardim Sul": 1, "Camino Upgrade": 1, "Camino Residencial": 2},
-  "Agosto": {"Organy Essencial": 2, "Camino Residencial": 1, "Quaddra Lorena": 1},
+  "Março":    {"Camino Alto da Boa Vista": 2},
+  "Abril":    {"Camino Residencial": 1, "Zip Brooklin": 1},
+  "Maio":     {"Camino Residencial": 1, "Camino Studio": 1, "Zip Brooklin": 1},
+  "Junho":    {"Zip Brooklin": 3, "Quaddra Lorena": 2},
+  "Julho":    {"Jardim Sul": 1, "Camino Upgrade": 1, "Camino Residencial": 2},
+  "Agosto":   {"Organy Essencial": 2, "Camino Residencial": 1, "Quaddra Lorena": 1},
   "Setembro": {"Quaddra Lorena": 1, "Zip Brooklin": 1},
-  "Outubro": {"Quaddra Lorena": 3, "Organy Essencial": 1, "Zip Brooklin": 1},
+  "Outubro":  {"Quaddra Lorena": 3, "Organy Essencial": 1, "Zip Brooklin": 1},
   "Novembro": {"Camino Residencial": 2, "Organy Essencial": 1}
 };
 
 const invest = 1513472.52;
-const total = vgvVals.reduce((a,b)=>a+b,0);
-const roi = (total - invest) / invest;
+const total  = vgvVals.reduce((a,b)=>a+b,0);
+const roi    = (total - invest) / invest;
 
-function brl(n){ return "R$ " + n.toLocaleString('pt-BR', {maximumFractionDigits:0}); }
+function brl(n){
+  return "R$ " + n.toLocaleString("pt-BR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
 
-document.getElementById('vgvTotal').innerText = brl(total);
-document.getElementById('invest').innerText = brl(invest);
-document.getElementById('roi').innerText = roi.toFixed(1)+"x";
+// ===== KPIs =====
+document.getElementById("vgvTotal").innerText = brl(total);
+document.getElementById("invest").innerText  = brl(invest);
+document.getElementById("roi").innerText     = roi.toFixed(1).replace(".", ",") + "x";
 
+// Pico mensal
 let maxIndex = 0;
 for(let i=1;i<vgvVals.length;i++){
-  if(vgvVals[i] > vgvVals[maxIndex]) maxIndex=i;
+  if(vgvVals[i] > vgvVals[maxIndex]) maxIndex = i;
 }
-document.getElementById('pico').innerText =
+document.getElementById("pico").innerText =
   months[maxIndex] + " — " + brl(vgvVals[maxIndex]);
 
+// Tabela
 document.querySelectorAll("td.val").forEach(td=>{
-  td.innerText = brl(parseFloat(td.dataset.num));
+  const n = parseFloat(td.getAttribute("data-num"));
+  td.innerText = brl(n);
 });
 document.getElementById("totalVgv").innerText = brl(total);
 
-// Linha principal
-Plotly.newPlot("line", [{
-  x: months,
-  y: vgvVals,
-  type:"scatter",
-  mode:"lines+markers",
-  line:{color:"#D4AF37",width:4},
-  marker:{size:8}
-}], {
-  margin:{t:10,r:10,b:40,l:100},
-  xaxis:{tickangle:-15},
-  yaxis:{
-    tickvals:[0,20000000,40000000,60000000],
-    ticktext:["0","20M","40M","60M"],
-    gridcolor:"rgba(0,0,0,0.1)"
-  }
-},{displayModeBar:false});
-
-// Select de meses
-const sel = document.getElementById("mesSel");
-months.forEach(m=>{
-  const o=document.createElement("option");
-  o.value=m; 
-  o.textContent=m;
-  sel.appendChild(o);
-});
-sel.value="Novembro";
-
-// Pizza com qtd + VGV estimado por produto
-function drawPie(month){
-  const obj = mixData[month] || {};
-  const labels = Object.keys(obj);
-  const values = Object.values(obj);
-
-  if(!labels.length){
-    Plotly.newPlot("pie", [{
-      labels:["Sem dados"],
-      values:[1],
-      type:"pie",
-      marker:{colors:["#eee"]}
-    }],{margin:{t:10,b:10}}, {displayModeBar:false});
+// ===== Gráficos (com fallback se Plotly não carregar) =====
+function desenharGraficos(){
+  if (typeof Plotly === "undefined"){
+    document.getElementById("line").innerHTML = "Não foi possível carregar o gráfico de linha (Plotly bloqueado).";
+    document.getElementById("pie").innerHTML  = "Não foi possível carregar o gráfico de pizza (Plotly bloqueado).";
     return;
   }
 
-  const monthTotalVgv = monthVgv[month] || 0;
-  const totalQtd = values.reduce((a,b)=>a+b,0);
-  const ticketMedio = totalQtd ? monthTotalVgv / totalQtd : 0;
-
-  const labelsWithVgv = labels.map((l,i)=>{
-    const qtd = values[i];
-    const vgvEst = qtd * ticketMedio;
-    return l + " (" + qtd + " · ~" + brl(vgvEst) + ")";
-  });
-
-  Plotly.newPlot("pie",[{
-    labels: labelsWithVgv,
-    values: values,
-    type:"pie",
-    textinfo:"percent",
-    marker:{
-      colors:['#D4AF37','#B0A170','#E1C699','#8C7853','#EEE8AA','#C8B88A','#D9C89E','#BDA55D']
+  // Linha
+  Plotly.newPlot("line", [{
+    x: months,
+    y: vgvVals,
+    type:"scatter",
+    mode:"lines+markers",
+    line:{ color:"#D4AF37", width:4 },
+    marker:{ size:8 }
+  }], {
+    margin:{ t:10, r:10, b:40, l:100 },
+    xaxis:{ tickangle:-15 },
+    yaxis:{
+      tickvals:[0,20000000,40000000,60000000],
+      ticktext:["0","20M","40M","60M"],
+      gridcolor:"rgba(0,0,0,0.1)"
     }
-  }], {margin:{t:10,b:10}}, {displayModeBar:false});
+  }, { displayModeBar:false });
+
+  // Select meses
+  const sel = document.getElementById("mesSel");
+  months.forEach(m=>{
+    const o = document.createElement("option");
+    o.value = m;
+    o.textContent = m;
+    sel.appendChild(o);
+  });
+  sel.value = "Novembro";
+
+  function drawPie(month){
+    const obj = mixData[month] || {};
+    const labels = Object.keys(obj);
+    const values = Object.values(obj);
+
+    if(!labels.length){
+      Plotly.newPlot("pie", [{
+        labels:["Sem dados"],
+        values:[1],
+        type:"pie",
+        marker:{ colors:["#eee"] }
+      }], { margin:{t:10,b:10} }, { displayModeBar:false });
+      return;
+    }
+
+    const monthTotalVgv = monthVgv[month] || 0;
+    const totalQtd = values.reduce((a,b)=>a+b,0);
+    const ticketMedio = totalQtd ? monthTotalVgv / totalQtd : 0;
+
+    const labelsWithVgv = labels.map((l,i)=>{
+      const qtd = values[i];
+      const vgvProd = qtd * ticketMedio;
+      return l + " (" + qtd + ") " + brl(vgvProd);
+    });
+
+    Plotly.newPlot("pie", [{
+      labels: labelsWithVgv,
+      values: values,
+      type:"pie",
+      textinfo:"percent",
+      marker:{
+        colors:['#D4AF37','#B0A170','#E1C699','#8C7853',
+                '#EEE8AA','#C8B88A','#D9C89E','#BDA55D']
+      }
+    }], { margin:{t:10,b:10} }, { displayModeBar:false });
+  }
+
+  drawPie(sel.value);
+  sel.addEventListener("change", e=>drawPie(e.target.value));
 }
 
-drawPie(sel.value);
-sel.addEventListener("change", e=>drawPie(e.target.value));
-
+desenharGraficos();
 </script>
-
 </body>
 </html>

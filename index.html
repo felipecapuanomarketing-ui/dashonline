@@ -3,147 +3,128 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Yuny — BI Online (Março a Novembro 2025)</title>
+<title>Yuny — BI Online (Março a Dezembro 2025)</title>
 
 <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
 
 <style>
-  :root { --gold:#D4AF37; --text:#111; --muted:#666; }
-  body {
-    font-family: Inter, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    margin:24px;
-    color:var(--text);
-    background:#fff;
-  }
-  header {
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:16px;
-    gap:16px;
-  }
-  .brand { display:flex; align-items:center; gap:12px; }
-  .brand h1 { font-size:20px; margin:0; font-weight:700; }
-  .pill {
-    background:rgba(212,175,55,0.08);
-    color:var(--gold);
-    border:1px solid rgba(212,175,55,0.3);
-    padding:6px 10px;
-    border-radius:999px;
-    font-size:12px;
-  }
-  .grid { display:grid; grid-template-columns: 1.2fr 1fr; gap:24px; }
-  .grid-2 { display:grid; grid-template-columns: 1fr 1fr; gap:24px; margin-top:24px; }
-  .card { border:1px solid #eee; border-radius:12px; padding:16px; background:#fff; }
-  h2 { font-size:16px; margin:0 0 10px 0; }
-  .kpis { display:grid; grid-template-columns: repeat(4,1fr); gap:12px; margin:8px 0 18px 0; }
-  .kpi { border:1px solid #eee; border-radius:12px; padding:12px; background:#fff; }
-  .kpi .label { color:#777; font-size:12px; }
-  .kpi .value { font-weight:700; font-size:18px; }
-  table { width:100%; border-collapse:collapse; }
-  th, td { padding:10px 12px; border-bottom:1px solid #eee; }
-  th { text-align:left; color:#555; font-size:12px; letter-spacing:.02em; }
-  tfoot td { font-weight:700; }
-  .select-row { display:flex; align-items:center; gap:8px; margin:8px 0 12px 0; }
-  select { padding:8px 10px; border-radius:8px; border:1px solid #ddd; }
-  footer {
-    margin-top:22px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    font-size:12px;
-    color:var(--muted);
-  }
-  @media (max-width: 900px){
-    header{ flex-wrap: wrap; }
-    .grid { grid-template-columns: 1fr; }
-    .grid-2 { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 680px){
-    .kpis { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 420px){
-    body { margin: 12px; }
-    .kpis { grid-template-columns: 1fr; }
-  }
-  .table-wrap { width:100%; overflow-x:auto; }
+:root { --gold:#D4AF37; --text:#111; --muted:#666; }
+body {
+  font-family: Inter, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  margin:24px; color:var(--text); background:#fff;
+}
+header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:16px; gap:16px;
+}
+.brand h1 { font-size:20px; margin:0; font-weight:700; }
+.pill {
+  background:rgba(212,175,55,0.08);
+  color:var(--gold);
+  border:1px solid rgba(212,175,55,0.3);
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+}
+.kpis {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:12px; margin:12px 0 20px;
+}
+.kpi {
+  border:1px solid #eee; border-radius:12px;
+  padding:12px; background:#fff;
+}
+.kpi .label { font-size:12px; color:#777; }
+.kpi .value { font-size:18px; font-weight:700; }
+.grid { display:grid; grid-template-columns:1.2fr 1fr; gap:24px; }
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:24px; }
+.card {
+  border:1px solid #eee; border-radius:12px;
+  padding:16px; background:#fff;
+}
+h2 { font-size:16px; margin:0 0 10px 0; }
+table { width:100%; border-collapse:collapse; }
+th, td { padding:10px 12px; border-bottom:1px solid #eee; }
+th { font-size:12px; color:#555; text-align:left; }
+footer {
+  margin-top:22px; display:flex;
+  justify-content:space-between;
+  font-size:12px; color:var(--muted);
+}
+select {
+  padding:8px 10px; border-radius:8px;
+  border:1px solid #ddd; margin-bottom:10px;
+}
+@media(max-width:900px){
+  .grid,.grid-2{grid-template-columns:1fr;}
+  .kpis{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:420px){
+  .kpis{grid-template-columns:1fr;}
+}
 </style>
 </head>
 
 <body>
+
 <header>
   <div class="brand">
-    <h1>Performance Online — Yuny (Março a Novembro 2025)</h1>
+    <h1>Performance Online — Yuny (Março a Dezembro 2025)</h1>
   </div>
   <span class="pill">BI Interativo</span>
 </header>
 
 <section class="kpis">
   <div class="kpi"><div class="label">VGV acumulado</div><div class="value" id="vgvTotal"></div></div>
-  <div class="kpi"><div class="label">Investimento (mídia + estrutura)</div><div class="value" id="invest"></div></div>
+  <div class="kpi"><div class="label">Investimento total</div><div class="value" id="invest"></div></div>
   <div class="kpi"><div class="label">ROI total</div><div class="value" id="roi"></div></div>
   <div class="kpi"><div class="label">Pico mensal</div><div class="value" id="pico"></div></div>
 </section>
 
 <div class="grid">
   <div class="card">
-    <h2>Evolução Mensal do VGV Online</h2>
+    <h2>Evolução Mensal do VGV</h2>
     <div id="line"></div>
   </div>
 
   <div class="card">
     <h2>Resultados por Mês</h2>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Mês</th><th style="text-align:right">VGV (R$)</th></tr></thead>
-        <tbody>
-          <tr><td>Março</td><td class="val" data-num="961968"></td></tr>
-          <tr><td>Abril</td><td class="val" data-num="1294520"></td></tr>
-          <tr><td>Maio</td><td class="val" data-num="1495000"></td></tr>
-          <tr><td>Junho</td><td class="val" data-num="22837000"></td></tr>
-          <tr><td>Julho</td><td class="val" data-num="1643312"></td></tr>
-          <tr><td>Agosto</td><td class="val" data-num="14250000"></td></tr>
-          <tr><td>Setembro</td><td class="val" data-num="15319600"></td></tr>
-          <tr><td>Outubro</td><td class="val" data-num="33369600"></td></tr>
-          <tr><td>Novembro</td><td class="val" data-num="3204500"></td></tr>
-        </tbody>
-        <tfoot>
-          <tr><td>Total</td><td id="totalVgv" style="text-align:right"></td></tr>
-        </tfoot>
-      </table>
-    </div>
+    <table>
+      <thead><tr><th>Mês</th><th style="text-align:right">VGV (R$)</th></tr></thead>
+      <tbody id="tableBody"></tbody>
+      <tfoot>
+        <tr><td>Total</td><td id="totalVgv" style="text-align:right"></td></tr>
+      </tfoot>
+    </table>
   </div>
 </div>
 
 <div class="grid-2">
   <div class="card">
-    <h2>Mix de Produtos por Mês</h2>
-    <div class="select-row">
-      <label for="mesSel">Mês:</label>
-      <select id="mesSel"></select>
-    </div>
+    <h2>Mix de Produtos</h2>
+    <select id="mesSel"></select>
     <div id="pie"></div>
   </div>
 
   <div class="card">
     <h2>Observações</h2>
     <p style="color:#555; line-height:1.5">
-      • <b>Outubro foi o pico absoluto de performance</b>, destacando a força do digital no período.<br/>
-      • As campanhas estruturadas iniciaram <b>a partir de abril</b>, totalizando 8 meses de operação contínua.<br/>
-      • Média mensal do período: <b>R$ 11.796.937,50 em VGV</b> – indicador forte de consistência.<br/>
-      • Nos gráficos de mix, os rótulos mostram <b>produto, quantidade e VGV estimado do mês</b> (ticket médio).<br/>
+      • Outubro foi o pico absoluto de performance.<br/>
+      • Campanhas estruturadas iniciadas em abril (8 meses ativos).<br/>
+      • Dezembro registra venda de <b>UAPÉ — R$ 4.300.000,00</b>.<br/>
+      • Investimento considera mídia + estrutura mensal.
     </p>
   </div>
 </div>
 
 <footer>
   <div>Fonte: Squad Yuny — CRM & Mídia Digital</div>
-  <div>Atualizado até Novembro/2025</div>
+  <div>Atualizado até Dezembro/2025</div>
 </footer>
 
 <script>
-// ===== Dados =====
-const months = ["Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro"];
+// ===================== DADOS =====================
+const months = ["Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 
 const vgvVals = [
   961968,
@@ -154,133 +135,80 @@ const vgvVals = [
   14250000,
   15319600,
   33369600,
-  3204500
+  3204500,
+  4300000
 ];
 
-const monthVgv = {
-  "Março":    961968,
-  "Abril":    1294520,
-  "Maio":     1495000,
-  "Junho":    22837000,
-  "Julho":    1643312,
-  "Agosto":   14250000,
-  "Setembro": 15319600,
-  "Outubro":  33369600,
-  "Novembro": 3204500
-};
-
 const mixData = {
-  "Março":    {"Camino Alto da Boa Vista": 2},
-  "Abril":    {"Camino Residencial": 1, "Zip Brooklin": 1},
-  "Maio":     {"Camino Residencial": 1, "Camino Studio": 1, "Zip Brooklin": 1},
-  "Junho":    {"Zip Brooklin": 3, "Quaddra Lorena": 2},
-  "Julho":    {"Jardim Sul": 1, "Camino Upgrade": 1, "Camino Residencial": 2},
-  "Agosto":   {"Organy Essencial": 2, "Camino Residencial": 1, "Quaddra Lorena": 1},
-  "Setembro": {"Quaddra Lorena": 1, "Zip Brooklin": 1},
-  "Outubro":  {"Quaddra Lorena": 3, "Organy Essencial": 1, "Zip Brooklin": 1},
-  "Novembro": {"Camino Residencial": 2, "Organy Essencial": 1}
+  "Março": {"Camino Alto da Boa Vista":2},
+  "Abril": {"Camino Residencial":1,"Zip Brooklin":1},
+  "Maio": {"Camino Residencial":1,"Camino Studio":1,"Zip Brooklin":1},
+  "Junho": {"Zip Brooklin":3,"Quaddra Lorena":2},
+  "Julho": {"Jardim Sul":1,"Camino Upgrade":1,"Camino Residencial":2},
+  "Agosto": {"Organy Essencial":2,"Camino Residencial":1,"Quaddra Lorena":1},
+  "Setembro": {"Quaddra Lorena":1,"Zip Brooklin":1},
+  "Outubro": {"Quaddra Lorena":3,"Organy Essencial":1,"Zip Brooklin":1},
+  "Novembro": {"Camino Residencial":2,"Organy Essencial":1},
+  "Dezembro": {"UAPÉ":1}
 };
 
-const invest = 1513472.52;
-const total  = vgvVals.reduce((a,b)=>a+b,0);
-const roi    = (total - invest) / invest;
+// Investimentos
+const midia = 1522428.30;
+const estruturaMensal = 19000;
+const estruturaTotal = estruturaMensal * months.length;
+const invest = midia + estruturaTotal;
 
-// ===== Helpers =====
+// ===================== HELPERS =====================
 function brl(n){
-  return "R$ " + n.toLocaleString("pt-BR", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
+  return "R$ " + n.toLocaleString("pt-BR",{minimumFractionDigits:2});
 }
 
-// ===== KPIs =====
-document.getElementById("vgvTotal").innerText = brl(total);         // R$ 94.375.500,00
-document.getElementById("invest").innerText  = brl(invest);
-document.getElementById("roi").innerText     = roi.toFixed(1).replace(".", ",") + "x";
+// ===================== KPIs =====================
+const total = vgvVals.reduce((a,b)=>a+b,0);
+const roi = (total - invest) / invest;
 
-// Pico mensal
-let maxIndex = 0;
-for(let i=1;i<vgvVals.length;i++){
-  if(vgvVals[i] > vgvVals[maxIndex]) maxIndex = i;
-}
-document.getElementById("pico").innerText =
-  months[maxIndex] + " — " + brl(vgvVals[maxIndex]);
+document.getElementById("vgvTotal").innerText = brl(total);
+document.getElementById("invest").innerText = brl(invest);
+document.getElementById("roi").innerText = roi.toFixed(1).replace(".",",")+"x";
 
-// Tabela
-document.querySelectorAll("td.val").forEach(td=>{
-  const n = parseFloat(td.getAttribute("data-num"));
-  td.innerText = brl(n);
+let maxIndex = vgvVals.indexOf(Math.max(...vgvVals));
+document.getElementById("pico").innerText = months[maxIndex]+" — "+brl(vgvVals[maxIndex]);
+
+// ===================== TABELA =====================
+const tbody = document.getElementById("tableBody");
+months.forEach((m,i)=>{
+  tbody.innerHTML += `<tr><td>${m}</td><td style="text-align:right">${brl(vgvVals[i])}</td></tr>`;
 });
 document.getElementById("totalVgv").innerText = brl(total);
 
-// ===== Gráfico de Linha =====
-Plotly.newPlot("line", [{
-  x: months,
-  y: vgvVals,
-  type:"scatter",
-  mode:"lines+markers",
-  line:{ color:"#D4AF37", width:4 },
-  marker:{ size:8 }
-}], {
-  margin:{ t:10, r:10, b:40, l:100 },
-  xaxis:{ tickangle:-15 },
-  yaxis:{
-    tickvals:[0,20000000,40000000,60000000],
-    ticktext:["0","20M","40M","60M"],
-    gridcolor:"rgba(0,0,0,0.1)"
-  }
-}, { displayModeBar:false });
+// ===================== LINHA =====================
+Plotly.newPlot("line",[{
+  x:months, y:vgvVals, type:"scatter", mode:"lines+markers",
+  line:{color:"#D4AF37", width:4}, marker:{size:8}
+}],{margin:{t:10,l:90,b:40}},{displayModeBar:false});
 
-// ===== Pizza =====
+// ===================== PIZZA =====================
 const sel = document.getElementById("mesSel");
 months.forEach(m=>{
-  const o = document.createElement("option");
-  o.value = m;
-  o.textContent = m;
-  sel.appendChild(o);
+  const o=document.createElement("option");
+  o.value=m; o.textContent=m; sel.appendChild(o);
 });
-sel.value = "Novembro";
+sel.value="Outubro";
 
-// Rótulo: Produto (qtd) R$ 22.000.000,00
 function drawPie(month){
   const obj = mixData[month] || {};
   const labels = Object.keys(obj);
   const values = Object.values(obj);
 
-  if(!labels.length){
-    Plotly.newPlot("pie", [{
-      labels:["Sem dados"],
-      values:[1],
-      type:"pie",
-      marker:{ colors:["#eee"] }
-    }], { margin:{t:10,b:10} }, { displayModeBar:false });
-    return;
-  }
-
-  const monthTotalVgv = monthVgv[month] || 0;
-  const totalQtd = values.reduce((a,b)=>a+b,0);
-  const ticketMedio = totalQtd ? monthTotalVgv / totalQtd : 0;
-
-  const labelsWithVgv = labels.map((l,i)=>{
-    const qtd = values[i];
-    const vgvProd = qtd * ticketMedio;
-    return l + " (" + qtd + ") " + brl(vgvProd); // Ex.: Quaddra Lorena (3) R$ 22.000.000,00
-  });
-
-  Plotly.newPlot("pie", [{
-    labels: labelsWithVgv,
-    values: values,
+  Plotly.newPlot("pie",[{
+    labels: labels.map((l,i)=>`${l} (${values[i]})`),
+    values,
     type:"pie",
-    textinfo:"percent",
-    marker:{
-      colors:['#D4AF37','#B0A170','#E1C699','#8C7853',
-              '#EEE8AA','#C8B88A','#D9C89E','#BDA55D']
-    }
-  }], { margin:{t:10,b:10} }, { displayModeBar:false });
+    textinfo:"percent"
+  }],{margin:{t:10,b:10}},{displayModeBar:false});
 }
-
 drawPie(sel.value);
-sel.addEventListener("change", e=>drawPie(e.target.value));
+sel.addEventListener("change",e=>drawPie(e.target.value));
 </script>
 
 </body>

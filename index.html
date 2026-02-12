@@ -3,64 +3,108 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Yuny — BI Online (Março a Dezembro 2025)</title>
+<title>Yuny — BI Online (Março 2025 a Janeiro 2026)</title>
 
 <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
 
 <style>
 :root { --gold:#D4AF37; --text:#111; --muted:#666; }
-body {
+
+body{
   font-family: Inter, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  margin:24px; color:var(--text); background:#fff;
+  margin:24px;
+  background:#fff;
+  color:var(--text);
 }
-header {
-  display:flex; align-items:center; justify-content:space-between;
-  margin-bottom:16px; gap:16px;
+
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
 }
-.brand h1 { font-size:20px; margin:0; font-weight:700; }
-.pill {
-  background:rgba(212,175,55,0.08);
-  color:var(--gold);
+
+h1{ font-size:20px; margin:0; }
+
+.pill{
+  background:rgba(212,175,55,0.1);
   border:1px solid rgba(212,175,55,0.3);
-  padding:6px 10px;
+  padding:6px 12px;
   border-radius:999px;
   font-size:12px;
+  color:var(--gold);
 }
-.kpis {
-  display:grid; grid-template-columns:repeat(4,1fr);
-  gap:12px; margin:12px 0 20px;
+
+.kpis{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-bottom:24px;
 }
-.kpi {
-  border:1px solid #eee; border-radius:12px;
-  padding:12px; background:#fff;
+
+.kpi{
+  border:1px solid #eee;
+  border-radius:12px;
+  padding:14px;
 }
-.kpi .label { font-size:12px; color:#777; }
-.kpi .value { font-size:18px; font-weight:700; }
-.grid { display:grid; grid-template-columns:1.2fr 1fr; gap:24px; }
-.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:24px; }
-.card {
-  border:1px solid #eee; border-radius:12px;
-  padding:16px; background:#fff;
+
+.kpi .label{
+  font-size:12px;
+  color:#777;
 }
-h2 { font-size:16px; margin:0 0 10px 0; }
-table { width:100%; border-collapse:collapse; }
-th, td { padding:10px 12px; border-bottom:1px solid #eee; }
-th { font-size:12px; color:#555; text-align:left; }
-footer {
-  margin-top:22px; display:flex;
+
+.kpi .value{
+  font-size:18px;
+  font-weight:700;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:24px;
+}
+
+.card{
+  border:1px solid #eee;
+  border-radius:12px;
+  padding:16px;
+}
+
+h2{
+  font-size:16px;
+  margin-bottom:10px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,td{
+  padding:10px;
+  border-bottom:1px solid #eee;
+}
+
+th{
+  text-align:left;
+  font-size:12px;
+  color:#555;
+}
+
+tfoot td{
+  font-weight:bold;
+}
+
+.select-row{
+  margin-bottom:10px;
+}
+
+footer{
+  margin-top:30px;
+  font-size:12px;
+  color:#777;
+  display:flex;
   justify-content:space-between;
-  font-size:12px; color:var(--muted);
-}
-select {
-  padding:8px 10px; border-radius:8px;
-  border:1px solid #ddd; margin-bottom:10px;
-}
-@media(max-width:900px){
-  .grid,.grid-2{grid-template-columns:1fr;}
-  .kpis{grid-template-columns:repeat(2,1fr);}
-}
-@media(max-width:420px){
-  .kpis{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -68,146 +112,162 @@ select {
 <body>
 
 <header>
-  <div class="brand">
-    <h1>Performance Online — Yuny (Março a Dezembro 2025)</h1>
-  </div>
+  <h1>Performance Online — Yuny (Março/2025 a Janeiro/2026)</h1>
   <span class="pill">BI Interativo</span>
 </header>
 
 <section class="kpis">
-  <div class="kpi"><div class="label">VGV acumulado</div><div class="value" id="vgvTotal"></div></div>
-  <div class="kpi"><div class="label">Investimento total</div><div class="value" id="invest"></div></div>
-  <div class="kpi"><div class="label">ROI total</div><div class="value" id="roi"></div></div>
-  <div class="kpi"><div class="label">Pico mensal</div><div class="value" id="pico"></div></div>
+  <div class="kpi">
+    <div class="label">VGV acumulado</div>
+    <div class="value" id="vgvTotal"></div>
+  </div>
+
+  <div class="kpi">
+    <div class="label">Investimento (mídia + estrutura)</div>
+    <div class="value" id="invest"></div>
+  </div>
+
+  <div class="kpi">
+    <div class="label">ROI total</div>
+    <div class="value" id="roi"></div>
+  </div>
+
+  <div class="kpi">
+    <div class="label">Pico mensal</div>
+    <div class="value" id="pico"></div>
+  </div>
 </section>
 
 <div class="grid">
-  <div class="card">
-    <h2>Evolução Mensal do VGV</h2>
-    <div id="line"></div>
-  </div>
 
-  <div class="card">
-    <h2>Resultados por Mês</h2>
-    <table>
-      <thead><tr><th>Mês</th><th style="text-align:right">VGV (R$)</th></tr></thead>
-      <tbody id="tableBody"></tbody>
-      <tfoot>
-        <tr><td>Total</td><td id="totalVgv" style="text-align:right"></td></tr>
-      </tfoot>
-    </table>
-  </div>
+<div class="card">
+<h2>Evolução Mensal do VGV</h2>
+<div id="line"></div>
 </div>
 
-<div class="grid-2">
-  <div class="card">
-    <h2>Mix de Produtos</h2>
-    <select id="mesSel"></select>
-    <div id="pie"></div>
-  </div>
+<div class="card">
+<h2>Resultados por Mês</h2>
+<table>
+<thead>
+<tr><th>Mês</th><th style="text-align:right">VGV</th></tr>
+</thead>
+<tbody>
+<tr><td>Março</td><td class="val" data-num="961968"></td></tr>
+<tr><td>Abril</td><td class="val" data-num="1294520"></td></tr>
+<tr><td>Maio</td><td class="val" data-num="1495000"></td></tr>
+<tr><td>Junho</td><td class="val" data-num="22837000"></td></tr>
+<tr><td>Julho</td><td class="val" data-num="1643312"></td></tr>
+<tr><td>Agosto</td><td class="val" data-num="14250000"></td></tr>
+<tr><td>Setembro</td><td class="val" data-num="15319600"></td></tr>
+<tr><td>Outubro</td><td class="val" data-num="33369600"></td></tr>
+<tr><td>Novembro</td><td class="val" data-num="3204500"></td></tr>
+<tr><td>Dezembro</td><td class="val" data-num="4300000"></td></tr>
+<tr><td>Janeiro</td><td class="val" data-num="960000"></td></tr>
+</tbody>
+<tfoot>
+<tr><td>Total</td><td id="totalVgv" style="text-align:right"></td></tr>
+</tfoot>
+</table>
+</div>
 
-  <div class="card">
-    <h2>Observações</h2>
-    <p style="color:#555; line-height:1.5">
-      • Outubro foi o pico absoluto de performance.<br/>
-      • Campanhas estruturadas iniciadas em abril (8 meses ativos).<br/>
-      • Dezembro registra venda de <b>UAPÉ — R$ 4.300.000,00</b>.<br/>
-      • Investimento considera mídia + estrutura mensal.
-    </p>
-  </div>
+</div>
+
+<div class="grid" style="margin-top:24px;">
+
+<div class="card">
+<h2>Mix de Produtos por Mês</h2>
+<div class="select-row">
+<select id="mesSel"></select>
+</div>
+<div id="pie"></div>
+</div>
+
+<div class="card">
+<h2>Observações</h2>
+<p>
+• Outubro foi o pico absoluto de performance.<br>
+• Dezembro: 1 venda UAPÉ — R$ 4.300.000,00.<br>
+• Janeiro: 1 Migração Quaddra — R$ 960.000,00.<br>
+• Estrutura considerada: R$ 19.000/mês (março a janeiro).<br>
+• ROI considera mídia + estrutura.
+</p>
+</div>
+
 </div>
 
 <footer>
-  <div>Fonte: Squad Yuny — CRM & Mídia Digital</div>
-  <div>Atualizado até Dezembro/2025</div>
+<div>Fonte: Squad Yuny — CRM & Mídia Digital</div>
+<div>Atualizado até Janeiro/2026</div>
 </footer>
 
 <script>
-// ===================== DADOS =====================
-const months = ["Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+const months = ["Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro","Janeiro"];
 
-const vgvVals = [
-  961968,
-  1294520,
-  1495000,
-  22837000,
-  1643312,
-  14250000,
-  15319600,
-  33369600,
-  3204500,
-  4300000
-];
+const vgvVals = [961968,1294520,1495000,22837000,1643312,14250000,15319600,33369600,3204500,4300000,960000];
 
 const mixData = {
-  "Março": {"Camino Alto da Boa Vista":2},
-  "Abril": {"Camino Residencial":1,"Zip Brooklin":1},
-  "Maio": {"Camino Residencial":1,"Camino Studio":1,"Zip Brooklin":1},
-  "Junho": {"Zip Brooklin":3,"Quaddra Lorena":2},
-  "Julho": {"Jardim Sul":1,"Camino Upgrade":1,"Camino Residencial":2},
-  "Agosto": {"Organy Essencial":2,"Camino Residencial":1,"Quaddra Lorena":1},
-  "Setembro": {"Quaddra Lorena":1,"Zip Brooklin":1},
-  "Outubro": {"Quaddra Lorena":3,"Organy Essencial":1,"Zip Brooklin":1},
-  "Novembro": {"Camino Residencial":2,"Organy Essencial":1},
-  "Dezembro": {"UAPÉ":1}
+"Dezembro":{"UAPÉ":1},
+"Janeiro":{"Migração Quaddra":1}
 };
 
-// Investimentos
-const midia = 1522428.30;
-const estruturaMensal = 19000;
-const estruturaTotal = estruturaMensal * months.length;
-const invest = midia + estruturaTotal;
+const midiaBase = 1522428.30;
+const midiaJaneiro = 162746.60;
+const estrutura = 19000 * months.length;
 
-// ===================== HELPERS =====================
-function brl(n){
-  return "R$ " + n.toLocaleString("pt-BR",{minimumFractionDigits:2});
-}
+const invest = midiaBase + midiaJaneiro + estrutura;
 
-// ===================== KPIs =====================
 const total = vgvVals.reduce((a,b)=>a+b,0);
 const roi = (total - invest) / invest;
+
+function brl(n){
+return "R$ " + n.toLocaleString("pt-BR",{minimumFractionDigits:2});
+}
 
 document.getElementById("vgvTotal").innerText = brl(total);
 document.getElementById("invest").innerText = brl(invest);
 document.getElementById("roi").innerText = roi.toFixed(1).replace(".",",")+"x";
 
-let maxIndex = vgvVals.indexOf(Math.max(...vgvVals));
-document.getElementById("pico").innerText = months[maxIndex]+" — "+brl(vgvVals[maxIndex]);
-
-// ===================== TABELA =====================
-const tbody = document.getElementById("tableBody");
-months.forEach((m,i)=>{
-  tbody.innerHTML += `<tr><td>${m}</td><td style="text-align:right">${brl(vgvVals[i])}</td></tr>`;
+document.querySelectorAll(".val").forEach(td=>{
+td.innerText = brl(parseFloat(td.dataset.num));
 });
+
 document.getElementById("totalVgv").innerText = brl(total);
 
-// ===================== LINHA =====================
 Plotly.newPlot("line",[{
-  x:months, y:vgvVals, type:"scatter", mode:"lines+markers",
-  line:{color:"#D4AF37", width:4}, marker:{size:8}
-}],{margin:{t:10,l:90,b:40}},{displayModeBar:false});
+x:months,
+y:vgvVals,
+type:"scatter",
+mode:"lines+markers",
+line:{color:"#D4AF37",width:4}
+}],{margin:{t:10}});
 
-// ===================== PIZZA =====================
 const sel = document.getElementById("mesSel");
 months.forEach(m=>{
-  const o=document.createElement("option");
-  o.value=m; o.textContent=m; sel.appendChild(o);
+let o=document.createElement("option");
+o.value=m;
+o.textContent=m;
+sel.appendChild(o);
 });
-sel.value="Outubro";
 
-function drawPie(month){
-  const obj = mixData[month] || {};
-  const labels = Object.keys(obj);
-  const values = Object.values(obj);
-
-  Plotly.newPlot("pie",[{
-    labels: labels.map((l,i)=>`${l} (${values[i]})`),
-    values,
-    type:"pie",
-    textinfo:"percent"
-  }],{margin:{t:10,b:10}},{displayModeBar:false});
+function drawPie(m){
+let data=mixData[m];
+if(!data){
+Plotly.newPlot("pie",[{
+labels:["Sem vendas"],
+values:[1],
+type:"pie"
+}]);
+return;
 }
-drawPie(sel.value);
+Plotly.newPlot("pie",[{
+labels:Object.keys(data),
+values:Object.values(data),
+type:"pie"
+}]);
+}
+
+sel.value="Janeiro";
+drawPie("Janeiro");
 sel.addEventListener("change",e=>drawPie(e.target.value));
 </script>
 
